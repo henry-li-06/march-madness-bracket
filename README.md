@@ -60,7 +60,7 @@ Distributed under the MIT License. See `LICENSE` for more information. <br/>
 
 
 ## Contact 
-Henry Li - [@henryli6](https://github.com/henryli6) - hl738@cornell.edu
+Henry Li - [@henry-li-06](https://github.com/henry-li-06) - hl738@cornell.edu
 
 
 ## Acknowledgements 
