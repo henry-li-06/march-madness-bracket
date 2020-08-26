@@ -8,21 +8,25 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
   * [Usage](#usage)
+* [Examples](#examples)
 * [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
 
 ## About the Algorithm
-<img src = '' alt = 'preview image'>
 
+<img alt = '*** MAYBE A DIFFERENT IMAGE HERE ***' src = '' width = 800 />
+
+<!-- TODO -->
 This algorithm implements a linear SVM to predict the outcome of the 2019 NCAA March Madness tournament.
+
 
 ## Getting Started
 To run the algorithm on your machine, follow the  below steps
 
 ### Prerequisites 
-* Python 3.7 / pip3 
+* Python3 + pip3 
 * [Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html)
 
 
@@ -38,6 +42,7 @@ pip install -r requirements.txt
 ```
 
 ### Usage 
+<!-- TODO -->
 1. Collect and gather data (OPTIONAL: data is included in the respository) <br />
 *** Commands should be run with the following blank files: ***
     * all_games_19.csv
@@ -54,6 +59,22 @@ cd ..
 ```sh
 python bracket
 ```
+
+## Examples 
+
+### March Madness 2019 Prediction
+<img alt = 'March Madness 2019' src = './images/mm-bracket-19.png' width = 600 />
+
+<br /> <br />
+
+### March Madness 2018 Prediction
+<img alt = 'March Madness 2018' src = './images/mm-bracket-18.png' width = 600 />
+
+<br /> <br />
+
+### March Madness 2017 Prediction
+<img alt = 'March Madness 2018' src = './images/mm-bracket-18.png' width = 600 />
+
 ## License 
 Distributed under the MIT License. See `LICENSE` for more information. <br/>
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
