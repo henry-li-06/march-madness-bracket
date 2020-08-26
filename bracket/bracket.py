@@ -1,5 +1,7 @@
 from model import model, team_data, all_games_19
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.decomposition import PCA
+import pandas as pd
 
 class Node:
     '''
@@ -8,14 +10,32 @@ class Node:
 
     VERTICAL_SEPARATION = [0, 0, 150, 65, 30, 15, 8] # vertical separation between nodes
     HORIZONTAL_SEPARATION = 80 # horizontal separation between nodes 
-    #VERTICAL_DECREASE = 8 # vertical increase as depth of nodes increas
-    
-    i = 0 # iterator for adding teams
+
+    all_games_19 = pd.read_csv('bracket/data/all_games_19.csv')
+    training_team_data = pd.read_csv('bracket/data/cbb19.csv')
+
+    features = list(training_team_data.drop(columns = [
+        'TEAM',
+        'CONF',
+        'G',
+        'W',
+        'POSTSEASON',
+        'SEED',
+        'REGION'
+    ]).columns)
+
+    for feature in features:
+        all_games_19[feature] = 0.0
+        for i in range(len(all_games_19)):
+            all_games_19[feature][i] = training_team_data.loc[
+            training_team_data['TEAM'] == all_games_19['Away Team'][i],
+            [feature]].reset_index()[feature][0] - training_team_data.loc[
+                training_team_data['TEAM'] == all_games_19['Home Team'][i],
+                [feature]].reset_index()[feature][0]
 
     scaler = MinMaxScaler()
-    scaler.fit(all_games_19[['pts_difference']])
-
-    features = ['ADJOE' ,'ADJDE', '3P_O', 'EFG_O', 'ORB', 'FTR']
+    pca = PCA(n_components = 8)
+    pca.fit(scaler.fit_transform(all_games_19[features]))
 
     first_round_games = [] # 2D array of first round games 
     seeds = [1, 8, 5, 4, 6, 3, 7, 2]
@@ -28,7 +48,10 @@ class Node:
             game.append(team1)
             game.append(team2)
             first_round_games.append(game)
-    
+    # print(first_round_games)    
+
+    i = 0 # iterator for adding teams
+
     def __init__(self, data, d, x, y):
         self.data = data
         self.left = None
@@ -84,8 +107,8 @@ class Node:
         self.right.add_teams_right()
 
     def add_teams_left(self):
+        # print('****** ' + str(Node.i) + ' ******')
         if(self.depth == 5):
-            #print(Node.i)
             #print(self.first_round_games[Node.i][0] + ' ' + self.first_round_games[Node.i][1])
             self.left = Node(self.first_round_games[Node.i][0], self.depth + 1, self.x - \
                 Node.HORIZONTAL_SEPARATION, self.y + Node.VERTICAL_SEPARATION[self.depth + 1])
@@ -97,6 +120,7 @@ class Node:
             self.right.add_teams_left()
     
     def add_teams_right(self):
+        # print('****** ' + str(Node.i) + ' ******')
         if(self.depth == 5):
             #print(Node.i)
             #print(self.first_round_games[Node.i][0] + ' ' + self.first_round_games[Node.i][1])
@@ -132,92 +156,18 @@ class Node:
         while(self.data == 'N/A'):
             self.make_prediction()
 
-    
-    # @staticmethod
-    # def make_game_prediction(team1, team2):
-    #     t1_points = team_data.loc[team_data['TEAM'] == team1, ['ADJOE']].reset_index()['ADJOE'][0] \
-    #         + team_data.loc[team_data['TEAM'] == team2, ['ADJDE']].reset_index()['ADJDE'][0]
-    #     t2_points = team_data.loc[team_data['TEAM'] == team2, ['ADJOE']].reset_index()['ADJOE'][0] \
-    #         + team_data.loc[team_data['TEAM'] == team1, ['ADJDE']].reset_index()['ADJDE'][0]
-
-    #     return team1 if t1_points > t2_points else team2
     @classmethod
-    def make_game_prediction(cls, team1, team2):
+    def make_game_prediction(cls, away_team, home_team):
         inputs = []
-        inputs.append(team_data.loc[team_data['TEAM'] == team1, ['ADJOE']].reset_index()['ADJOE'][0] \
-            + team_data.loc[team_data['TEAM'] == team2, ['ADJDE']].reset_index()['ADJDE'][0])
-        inputs.append(team_data.loc[team_data['TEAM'] == team2, ['ADJOE']].reset_index()['ADJOE'][0] \
-            + team_data.loc[team_data['TEAM'] == team1, ['ADJDE']].reset_index()['ADJDE'][0])
-        game = []
-        game.append([inputs[0] - inputs[1]])
-        scaled_data = cls.scaler.transform(game)
-        prediction = model.predict(scaled_data)
-        print(prediction[0])
-        return team1 if prediction[0] == 'Y' else team2
+        for feature in cls.features:
+            away_team_val = team_data.loc[team_data['TEAM'] == away_team, [feature]].reset_index()[feature][0]
+            home_team_val = team_data.loc[team_data['TEAM'] == home_team, [feature]].reset_index()[feature][0]
+            inputs.append(away_team_val - home_team_val)
+
+        scaled_features = cls.scaler.transform([inputs])
+        pca_projection = cls.pca.transform(scaled_features)
+        prediction = model.predict(pca_projection)
+        return away_team if prediction[0] == 'Y' else home_team
+
         
 
-
-def make_prediction(team1, team2, features):
-    inputs = []
-    for feature in features:
-        val = team_data.loc[team_data['TEAM'] == team1, [feature]].reset_index()[feature][0] \
-        - team_data.loc[team_data['TEAM'] == team2, \
-            [feature]].reset_index()[feature][0]
-        inputs.append(val)
-    game = []
-    game.append(inputs)
-    prediction = model.predict(game)
-    print(prediciton[0])
-    if(prediction[0] == 'Y'):
-        return team1
-    else:
-        return team2
-
-def make_prediction1(team1, team2, features):
-    #if(not(team1 in teams and team2 in teams)):
-    #    return 'Please enter valid teams'
-    # Need to get the differences and store them in lists    
-    inputs = [] # Need to make this into some 2D array kind of thing 
-    ADJOE_difference = team_data.loc[team_data['TEAM'] == team1, ['ADJOE']].reset_index()['ADJOE'][0] \
-        - team_data.loc[team_data['TEAM'] == team2, \
-            ['ADJOE']].reset_index()['ADJOE'][0]
-    ADJDE_difference = team_data.loc[team_data['TEAM'] == team1, \
-        ['ADJDE']].reset_index()['ADJDE'][0] - team_data.loc[team_data['TEAM'] == team2, \
-            ['ADJDE']].reset_index()['ADJDE'][0]
-    # ADJ_T_difference = team_data.loc[team_data['TEAM'] == team1, \
-    #    ['ADJ_T']].reset_index()['ADJ_T'][0] - team_data.loc[team_data['TEAM'] == team2, \
-    #        ['ADJ_T']].reset_index()['ADJ_T'][0]
-    # EFG_O_difference = team_data.loc[team_data['TEAM'] == team1, \
-    #    ['EFG_O']].reset_index()['EFG_O'][0] - team_data.loc[team_data['TEAM'] == team2, \
-    #        ['EFG_O']].reset_index()['EFG_O'][0] 
-    # TOR_difference = team_data.loc[team_data['TEAM'] == team1, \
-    #    ['TOR']].reset_index()['TOR'][0] - team_data.loc[team_data['TEAM'] == team2, \
-    #        ['TOR']].reset_index()['TOR'][0]
-    ORB_difference = team_data.loc[team_data['TEAM'] == team1, \
-        ['ORB']].reset_index()['ORB'][0] - team_data.loc[team_data['TEAM'] == team2, \
-            ['ORB']].reset_index()['ORB'][0]
-    # DRB_difference = team_data.loc[team_data['TEAM'] == team1, \
-    #    ['DRB']].reset_index()['DRB'][0] - team_data.loc[team_data['TEAM'] == team2, \
-    #        ['DRB']].reset_index()['DRB'][0]
-    FTR_difference = team_data.loc[team_data['TEAM'] == team1, \
-        ['FTR']].reset_index()['FTR'][0] - team_data.loc[team_data['TEAM'] == team2, \
-            ['FTR']].reset_index()['FTR'][0]
-    
-    features.append(ADJOE_difference)
-    features.append(ADJDE_difference)
-    features.append(ORB_difference)
-    #features.append(ADJ_T_difference)
-    #features.append(EFG_O_difference)
-    #features.append(TOR_difference)
-    #features.append(DRB_difference)
-    features.append(FTR_difference)
-    
-    game = []
-    game.append(features)
-    prediction = model.predict(game)
-    print(prediction[0])
-    if(prediction[0] == 'Y'):
-        return team1
-    else:
-        return team2
-            
