@@ -59,7 +59,7 @@ cd ..
 
 NOTE: This will take several minutes <br />
 
-2. Format the team data (This has already been done for the 2016-2017, 2017-2018, and 2018-2019 season data sets) <br /> <br />
+2. Format the team data (This has already been done for the 2016-2017, 2017-2018, and 2018-2019 season data sets) <br />
 
 #### For each the year you want to predict:
 
