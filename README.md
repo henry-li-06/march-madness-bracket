@@ -50,7 +50,6 @@ pip install -r requirements.txt
 <!-- TODO -->
 
 1. Collect and gather data (OPTIONAL: data is included in the respository) <br /> <br />
-   **_ Commands should be run with the following blank files: _**
 
 ```sh
 cd bracket
