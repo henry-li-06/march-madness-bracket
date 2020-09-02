@@ -60,7 +60,8 @@ cd ..
 NOTE: This will take several minutes <br />
 
 2. Format the team data (This has already been done for the 2016-2017, 2017-2018, and 2018-2019 season data sets) <br /> <br />
-   For each the year you want to predict:
+
+#### For each the year you want to predict:
 
 - Find the right file for the year (e.g. for the 2015-2016 season find **bracket/data/cbb16.csv**)
 - Add a new column "REGION"
@@ -73,7 +74,7 @@ NOTE: This will take several minutes <br />
 python bracket [tournament year]
 ```
 
-For example, for the 2017-2018 season, run
+Ex. for the 2017-2018 season, run
 
 ```sh
 python bracket 18
