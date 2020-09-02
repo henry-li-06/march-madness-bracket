@@ -20,7 +20,7 @@
 
 <!-- TODO -->
 
-This algorithm implements a K-Nearest Neighbors Classifier to predict the results of a NCAA March Madness tournament. The model is trained based on each DI game of the 2018-2019 college basketball season.
+This algorithm implements a K-Nearest Neighbors Classifier to predict the results of a NCAA March Madness tournament. The model is trained based on data of each DI game during the 2018-2019 college basketball season.
 
 ## Getting Started
 
