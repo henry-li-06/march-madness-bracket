@@ -16,7 +16,7 @@
 
 ## About the Algorithm
 
-<img alt = 'preview image' src = 'images/mm-logo.png' width = 800 />
+<img alt = 'preview image' src = 'images/mm-logo.png' width = 600 />
 
 <!-- TODO -->
 
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 
 <!-- TODO -->
 
-1. Collect and gather data (OPTIONAL: data is included in the respository) <br /> <br />
+1. Collect and gather data (OPTIONAL: training data is included in the respository) <br /> <br />
 
 ```sh
 cd bracket
@@ -59,7 +59,7 @@ cd ..
 
 NOTE: This will take several minutes <br />
 
-2. Format the team data (This has already been done for the 2016-2017, 2017-2018, and 2018-2019 season data sets) <br />
+2. Format the team data (This has already been done for the 2016-2017, 2017-2018, and 2018-2019 season data sets) <br /> <br />
    For each the year you want to predict:
 
 - Find the right file for the year (e.g. for the 2015-2016 season find **bracket/data/cbb16.csv**)
