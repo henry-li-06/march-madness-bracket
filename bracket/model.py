@@ -12,7 +12,5 @@ for i in range(8):
 features = all_games_19[columns]
 target = all_games_19["Away Win"]
 
-x_train, x_test, y_train, y_test = train_test_split(
-    features, target, test_size=0.5)
 model = KNeighborsClassifier(n_neighbors=50)
-model.fit(x_train, y_train)
+model.fit(features, target)
