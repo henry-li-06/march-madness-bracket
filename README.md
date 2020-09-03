@@ -98,7 +98,7 @@ NOTE: If no year is supplied, the algorithm will output the prediction for the 2
 
 ### March Madness 2017 Prediction
 
-<img alt = 'March Madness 2018' src = './images/mm-bracket-18.png' width = 600 />
+<img alt = 'March Madness 2018' src = './images/mm-bracket-17.png' width = 600 />
 
 ## License
 
