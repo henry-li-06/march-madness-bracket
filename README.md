@@ -16,7 +16,7 @@
 
 ## About the Algorithm
 
-<img alt = 'preview image' src = 'images/mm-logo.png' width = 600 />
+<img alt = 'preview image' src = 'images/mm-logo.png' width = 800 />
 
 <!-- TODO -->
 
